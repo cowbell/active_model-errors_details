@@ -21,9 +21,10 @@ class Person < ActiveRecord::Base
   validates :name, presence: true
 end
 
->> person = Person.new
->> person.valid?
->> person.errors.details[:name] #=> [{error: :blank}]
+person = Person.new
+person.valid?
+person.errors.details[:name]
+# => [{error: :blank}]
 ```
 
 You can add validator type to details hash when using `errors.add` method.
@@ -38,7 +39,7 @@ end
 person = Person.create(name: "!@#")
 
 person.errors.details[:name]
- # => [{error: :invalid_characters}]
+# => [{error: :invalid_characters}]
 ```
 
 To improve error details to contain not allowed characters set, you can
@@ -59,3 +60,5 @@ person.errors.details[:name]
 
 All built in Rails validators populate details hash with corresponding
 validator types.
+
+[![Build Status](https://travis-ci.org/cowbell/active_model-email_confirmation.svg)](https://travis-ci.org/cowbell/active_model-email_confirmation)
