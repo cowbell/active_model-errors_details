@@ -27,35 +27,39 @@ person.errors.details[:name]
 # => [{error: :blank}]
 ```
 
-You can add validator type to details hash when using `errors.add` method.
+You can add validator type to details hash when using `ActiveModel::Errors.add` method.
 
 ```ruby
-class Person < ActiveRecord::Base
-  def a_method_used_for_validation_purposes
-    errors.add(:name, :invalid_characters)
+class User < ActiveRecord::Base
+  validate :adulthood
+
+  def adulthood
+    errors.add(:age, :too_young) if age < 18
   end
 end
 
-person = Person.create(name: "!@#")
-
-person.errors.details[:name]
-# => [{error: :invalid_characters}]
+user = User.new(age: 15)
+user.valid?
+user.errors.details
+# => {age: [{error: :too_young}]}
 ```
 
-To improve error details to contain not allowed characters set, you can
-pass additional options to `errors.add` method.
+To improve error details to contain additional options, you can
+pass them to `ActiveModel::Errors.add` method.
 
 ```ruby
-class Person < ActiveRecord::Base
-  def a_method_used_for_validation_purposes
-    errors.add(:name, :invalid_characters, not_allowed: "!@#%*()_-+=")
+class User < ActiveRecord::Base
+  validate :adulthood
+
+  def adulthood
+    errors.add(:age, :too_young, years_limit: 18) if age < 18
   end
 end
 
-person = Person.create(name: "John!")
-
-person.errors.details[:name]
-# => [{error: :invalid_characters, not_allowed: "!@#%*()_-+="}]
+user = User.new(age: 15)
+user.valid?
+user.errors.details
+# => {age: [{error: :too_young, years_limit: 18}]}
 ```
 
 All built in Rails validators populate details hash with corresponding
