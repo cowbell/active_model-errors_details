@@ -63,15 +63,14 @@ class TestErrorsDetails < MiniTest::Unit::TestCase
     assert_equal({name: [{error: :invalid}] }, person.errors.details)
   end
 
-  # TODO: investigate why it doesn't work
-  # def test_dup_duplicates_details
-  #   errors = ActiveModel::Errors.new(Person.new)
-  #   errors.add(:name, :invalid)
-  #   errors_dup = errors.dup
-  #   errors_dup.add(:name, :taken)
+  def test_dup_duplicates_details
+    errors = ActiveModel::Errors.new(Person.new)
+    errors.add(:name, :invalid)
+    errors_dup = errors.dup
+    errors_dup.add(:name, :taken)
 
-  #   refute_equal errors_dup.details, errors.details
-  # end
+    refute_equal errors_dup.details, errors.details
+  end
 
   def test_delete_removes_details_on_given_attribute
     errors = ActiveModel::Errors.new(Person.new)

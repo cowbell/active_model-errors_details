@@ -1,5 +1,6 @@
 require "active_model/errors_details/version"
 require "active_model/errors"
+require "active_support/core_ext/object/deep_dup"
 
 module ActiveModel
   module ErrorsDetails
@@ -10,8 +11,8 @@ module ActiveModel
         alias_method :initialize_without_details, :initialize
         alias_method :initialize, :initialize_with_details
 
-        # alias_method :initialize_dup_without_details, :initialize_dup
-        # alias_method :initialize_dup, :initialize_dup_with_details
+        alias_method :initialize_dup_without_details, :initialize_dup
+        alias_method :initialize_dup, :initialize_dup_with_details
 
         alias_method :delete_without_details, :delete
         alias_method :delete, :delete_with_details
@@ -24,10 +25,10 @@ module ActiveModel
       end
     end
 
-    # def initialize_dup_with_details(other)
-    #   @details = other.details.dup
-    #   initialize_dup_without_details(other)
-    # end
+    def initialize_dup_with_details(other)
+      @details = other.details.deep_dup
+      initialize_dup_without_details(other)
+    end
 
     def details
       @details
