@@ -1,5 +1,7 @@
 # ActiveModel::Errors#details
 
+[![Build Status](https://travis-ci.org/cowbell/active_model-errors_details.svg?branch=master)](https://travis-ci.org/cowbell/active_model-errors_details)
+
 Feature backported from Rails 5.0 to use with Rails 4.x apps.
 
 Background: https://github.com/rails/rails/pull/18322
@@ -12,9 +14,7 @@ gem install "active_model-errors_details"
 
 ## Usage
 
-To check what validator type was used on invalid attribute, you can use
-`errors.details[:attribute]`. It returns array of hashes where under `:error`
- key you will find symbol of used validator.
+To check what validator type was used on invalid attribute, you can use `errors.details[:attribute]`. It returns array of hashes where under `:error` key you will find symbol of used validator.
 
 ```ruby
 class Person < ActiveRecord::Base
@@ -44,8 +44,7 @@ user.errors.details
 # => {age: [{error: :too_young}]}
 ```
 
-To improve error details to contain additional options, you can
-pass them to `ActiveModel::Errors.add` method.
+To improve error details to contain additional options, you can pass them to `ActiveModel::Errors.add` method.
 
 ```ruby
 class User < ActiveRecord::Base
@@ -64,5 +63,3 @@ user.errors.details
 
 All built in Rails validators populate details hash with corresponding
 validator types.
-
-[![Build Status](https://travis-ci.org/cowbell/active_model-email_confirmation.svg)](https://travis-ci.org/cowbell/active_model-email_confirmation)
