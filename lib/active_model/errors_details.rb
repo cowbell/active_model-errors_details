@@ -59,4 +59,4 @@ module ActiveModel
   end
 end
 
-ActiveModel::Errors.include(ActiveModel::ErrorsDetails)
+ActiveModel::Errors.send(:include, ActiveModel::ErrorsDetails)
