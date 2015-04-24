@@ -1,6 +1,31 @@
 require "active_model/errors_details/version"
 require "active_model/errors"
-require "active_support/core_ext/object/deep_dup"
+
+begin
+  require "active_support/core_ext/object/deep_dup"
+rescue LoadError
+  require "active_support/core_ext/object/duplicable"
+
+  class Object
+    def deep_dup
+      duplicable? ? dup : self
+    end
+  end
+
+  class Array
+    def deep_dup
+      map(&:deep_dup)
+    end
+  end
+
+  class Hash
+    def deep_dup
+      each_with_object(dup) do |(key, value), hash|
+        hash[key.deep_dup] = value.deep_dup
+      end
+    end
+  end
+end
 
 module ActiveModel
   module ErrorsDetails
