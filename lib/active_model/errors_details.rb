@@ -4,6 +4,7 @@ require "active_model/errors"
 begin
   require "active_support/core_ext/object/deep_dup"
 rescue LoadError
+  # Rails 3.2 compatibility
   require "active_support/core_ext/object/duplicable"
 
   class Object

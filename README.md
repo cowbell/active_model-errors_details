@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/cowbell/active_model-errors_details.svg?branch=master)](https://travis-ci.org/cowbell/active_model-errors_details)
 
-Feature backported from Rails 5.0 to use with Rails 4.x apps.
+Feature backported from Rails 5.0 to use with Rails 3.2.x and 4.x apps.
 
 Background: https://github.com/rails/rails/pull/18322
 
