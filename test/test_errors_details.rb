@@ -4,7 +4,7 @@ require "minitest_helper"
 require "active_support/core_ext/module/remove_method"
 require "active_model/naming"
 
-class TestErrorsDetails < MiniTest::Unit::TestCase
+class TestErrorsDetails < MiniTest::Test
   class Person
     extend ActiveModel::Naming
 

@@ -28,6 +28,41 @@ rescue LoadError
   end
 end
 
+if defined?(ActiveRecord)
+  require "active_record/autosave_association"
+
+  module ActiveRecord
+    module AutosaveAssociation
+      def association_valid?(reflection, record)
+        return true if record.destroyed? || (reflection.options[:autosave] && record.marked_for_destruction?)
+
+        validation_context = self.validation_context unless [:create, :update].include?(self.validation_context)
+        unless valid = record.valid?(validation_context)
+          if reflection.options[:autosave]
+            record.errors.each do |attribute, message|
+              attribute = "#{reflection.name}.#{attribute}"
+              errors[attribute] << message
+              errors[attribute].uniq!
+            end
+            # Monkey patch here
+            record.errors.details.each_key do |attribute|
+              reflection_attribute = "#{reflection.name}.#{attribute}"
+
+              record.errors.details[attribute].each do |error|
+                errors.details[reflection_attribute] << error
+                errors.details[reflection_attribute].uniq!
+              end
+            end
+          else
+            errors.add(reflection.name)
+          end
+        end
+        valid
+      end
+    end
+  end
+end
+
 module ActiveModel
   module ErrorsDetails
     MESSAGE_OPTIONS = [:message]
