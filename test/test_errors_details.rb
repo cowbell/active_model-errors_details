@@ -89,4 +89,13 @@ class TestErrorsDetails < MiniTest::Test
 
     assert_empty person.errors.details
   end
+
+  def test_errors_are_marshalable
+    errors = ActiveModel::Errors.new(Person.new)
+    errors.add(:name, :invalid)
+    serialized = Marshal.load(Marshal.dump(errors))
+
+    assert_equal errors.messages, serialized.messages
+    assert_equal errors.details, serialized.details
+  end
 end

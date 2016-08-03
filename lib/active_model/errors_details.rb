@@ -117,6 +117,29 @@ module ActiveModel
       details[attribute.to_sym] << error
       add_without_details(attribute, message, options)
     end
+
+    def marshal_dump
+      [@base, without_default_proc(@messages), without_default_proc(@details)]
+    end
+
+    def marshal_load(array)
+      @base, @messages, @details = array
+      apply_default_array(@messages)
+      apply_default_array(@details)
+    end
+
+    private
+
+    def without_default_proc(hash)
+      hash.dup.tap do |new_h|
+        new_h.default_proc = nil
+      end
+    end
+
+    def apply_default_array(hash)
+      hash.default_proc = proc { |h, key| h[key] = [] }
+      hash
+    end
   end
 end
 
