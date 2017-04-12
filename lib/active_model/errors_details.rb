@@ -49,8 +49,8 @@ if defined?(ActiveRecord)
               reflection_attribute = "#{reflection.name}.#{attribute}"
 
               record.errors.details[attribute].each do |error|
-                errors.details[reflection_attribute] << error
-                errors.details[reflection_attribute].uniq!
+                errors.details[reflection_attribute.to_sym] << error
+                errors.details[reflection_attribute.to_sym].uniq!
               end
             end
           else
