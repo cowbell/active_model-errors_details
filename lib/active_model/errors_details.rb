@@ -113,7 +113,15 @@ module ActiveModel
     def add_with_details(attribute, message = :invalid, options = {})
       message = message.call if message.respond_to?(:call)
 
-      error = {error: message}.merge(options.except(*::ActiveModel::Errors::CALLBACKS_OPTIONS + MESSAGE_OPTIONS))
+      options_for_details = options.except(*::ActiveModel::Errors::CALLBACKS_OPTIONS + MESSAGE_OPTIONS)
+
+      # Fix for looping dependencies when as_json is called and value is an object referencing self.
+      #
+      options_for_details.each do |key, value|
+        options_for_details[key] = value.to_s
+      end
+
+      error = {error: message}.merge(options_for_details)
       details[attribute.to_sym] << error
       add_without_details(attribute, message, options)
     end
